@@ -155,6 +155,7 @@ char** parse_cmd(char* cmd) {
         }
         tok = strtok(NULL, DELIMITER);
     }
+    
     // Set NULL terminator for array.
     tokens[index] = NULL;
 
