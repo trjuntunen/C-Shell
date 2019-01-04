@@ -18,6 +18,7 @@ int builtin_func_count() {
   return sizeof(builtin_cmds) / sizeof(char *);
 }
 
+
 /**
  * Change directory shell functionality. 
  */
@@ -33,6 +34,7 @@ int shell_cd(char** args) {
     }
     return 1;
 }
+
 
 /**
  * Executes the given arguments.
@@ -70,6 +72,7 @@ int launch(char** args) {
     return 1;
 }
 
+
 /**
  * Check if the commands given are correct and 
  * call the function to execute them if they are.
@@ -90,6 +93,7 @@ int execute(char** args) {
     return launch(args);
 }
 
+
 /**
  * Prints shell info for user assistance. 
  */
@@ -105,6 +109,7 @@ int shell_help(char **args) {
   printf("Use the man command for detailed information on programs.\n");
   return 1;
 }
+
 
 int shell_exit(char **args) { return 0; }
 
@@ -151,6 +156,7 @@ char** parse_cmd(char* cmd) {
     return tokens;
 }
 
+
 /**
  * Read in a command and return it as a char*.
  */
@@ -160,6 +166,7 @@ char* read_cmd() {
     getline(&cmd, &bufsize, stdin);
     return cmd;
 }
+
 
 /**
  * The main loop that runs the shell. Takes in  
@@ -187,6 +194,7 @@ void shell_loop() {
 
     } while(status);
 }
+
 
 int main() {
     shell_loop();
