@@ -29,7 +29,7 @@ int shell_cd(char** args) {
 
         // Change the directory with chdir().
         if(chdir(args[1]) != 0) {
-            perror("Error: ");
+            perror("shell");
         }
     }
     return 1;
@@ -46,29 +46,30 @@ int launch(char** args) {
     // Split the current process into 2 concurrent processes.
     pid = fork();
 
-    // Child process
+    // The new child process.
     if(pid == 0) {
-
-        // Attempt to execute the args.
+        
+        // Calls execvp() to replace current program with a new one.
         if(execvp(args[0], args) == -1) {
-            perror("Error: ");
+            perror("shell");
         }
         exit(1);
     }
 
-    // Forking error
+    // There was a forking error.
     else if(pid < 0) {
-        perror("Error: ");
+        perror("shell");
     }
 
-    // Parent process
+    // Original parent process
     else {
         do {
-            // Process waits ..
+            // Parent process waits for child to execute.
             wpid = waitpid(pid, &status, WUNTRACED);
         } while(!WIFEXITED(status) && !WIFSIGNALED(status));
     }
 
+    // Return 1 as to prompt for user input again.
     return 1;
 }
 
@@ -87,9 +88,13 @@ int execute(char** args) {
     // Check if the user entered one of the built-in commands.
     for(i = 0; i < builtin_func_count(); i++) {
         if(strcmp(args[0], builtin_cmds[i]) == 0) {
+            
+            // Return the matching built-in shell function.
             return (*builtin_funcs[i])(args);
         }
     }
+
+    // If no built-in command is matched, launch the process.
     return launch(args);
 }
 
